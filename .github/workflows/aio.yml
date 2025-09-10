@@ -1,0 +1,32 @@
+name: aiobuild
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: builda
+        run: |
+          sudo docker run \
+            --init \
+            --sig-proxy=false \
+            --name nextcloud-aio-mastercontainer \
+            --restart always \
+            --publish 80:80 \
+            --publish 8080:8080 \
+            --publish 8443:8443 \
+            --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
+            --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+            ghcr.io/nextcloud-releases/all-in-one:latest
+            -- mkdir -p ~/.cloudflared
+            --echo "${{ secrets.CF_CERT_PEM }}" > ~/.cloudflared/cert.pem 
+            --echo "${{ secrets.CF_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json 
+            --echo "${{ secrets.CF_CONFIG_YML }}" > ~/.cloudflared/config.yml
