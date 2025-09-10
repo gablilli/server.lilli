@@ -12,7 +12,7 @@ jobs:
 
       - name: Run Nextcloud AIO
         run: |
-          sudo docker run \
+          sudo docker run -d \
             --init \
             --sig-proxy=false \
             --name nextcloud-aio-mastercontainer \
