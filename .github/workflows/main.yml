@@ -10,7 +10,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: builda
+      - name: Run Nextcloud AIO
         run: |
           sudo docker run \
             --init \
@@ -23,7 +23,20 @@ jobs:
             --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
             --volume /var/run/docker.sock:/var/run/docker.sock:ro \
             ghcr.io/nextcloud-releases/all-in-one:latest
-            -- mkdir -p ~/.cloudflared
-            --echo "${{ secrets.CF_CERT_PEM }}" > ~/.cloudflared/cert.pem 
-            --echo "${{ secrets.CF_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json 
-            --echo "${{ secrets.CF_CONFIG_YML }}" > ~/.cloudflared/config.yml
+
+      - name: Run Cloudflare Tunnel
+        run: |
+          mkdir -p ~/.cloudflared
+          echo "${{ secrets.CLOUDFLARE_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json
+
+          cat > ~/.cloudflared/config.yml <<EOL
+          tunnel: cl-lilli
+          credentials-file: /home/runner/.cloudflared/tunnel.json
+
+          ingress:
+            - hostname: cloud.lilli.eu.org
+              service: http://localhost:8080
+            - service: http_status:404
+          EOL
+
+          cloudflared tunnel run cloud-tunnel
