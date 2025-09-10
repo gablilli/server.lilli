@@ -44,4 +44,4 @@ jobs:
             - service: http_status:404
           EOL
 
-          cloudflared tunnel run cloudlilli
+          cloudflared tunnel run cllilli
