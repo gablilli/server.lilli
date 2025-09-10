@@ -1,0 +1,18 @@
+name: lilliserver
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: builda
+        run: |
+            -- mkdir -p ~/.cloudflared
+            --echo "${{ secrets.CF_CERT_PEM }}" > ~/.cloudflared/cert.pem 
+            --echo "${{ secrets.CF_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json 
+            --echo "${{ secrets.CF_CONFIG_YML }}" > ~/.cloudflared/config.yml
