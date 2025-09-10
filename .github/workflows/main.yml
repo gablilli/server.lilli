@@ -27,16 +27,17 @@ jobs:
       - name: Run Cloudflare Tunnel
         run: |
           mkdir -p ~/.cloudflared
-          echo "${{ secrets.CLOUDFLARE_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json
-
-          cat > ~/.cloudflared/config.yml <<EOL
+          printf '%s' "${{ secrets.CLOUDFLARE_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json
+      
+          cat > ~/.cloudflared/config.yml <<'EOL'
           tunnel: cl-lilli
           credentials-file: /home/runner/.cloudflared/tunnel.json
-
+      
           ingress:
-            - hostname: cloud.lilli.eu.org
+            - hostname: cloud.redacted.com
               service: http://localhost:8080
             - service: http_status:404
           EOL
+      
+          cloudflared tunnel run cl-lilli
 
-          cloudflared tunnel run cloud-tunnel
