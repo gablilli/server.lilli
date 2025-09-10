@@ -23,19 +23,20 @@ jobs:
             --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
             --volume /var/run/docker.sock:/var/run/docker.sock:ro \
             ghcr.io/nextcloud-releases/all-in-one:latest
+
       - name: Run Cloudflare Tunnel
         run: |
           mkdir -p ~/.cloudflared
-          echo "${{ secrets.CLOUDFLARE_TUNNEL_JSON_B64 }}" | base64 -d > ~/.cloudflared/tunnel.json
-      
+          echo "${{ secrets.CLOUDFLARE_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json
+          
           cat > ~/.cloudflared/config.yml <<'EOL'
-        tunnel: cl-lilli
-        credentials-file: /home/runner/.cloudflared/tunnel.json
-        
-        ingress:
-          - hostname: cloud.lilli.eu.org
-            service: http://localhost:8080
-          - service: http_status:404
-EOL
+          tunnel: cloudlilli
+          credentials-file: /home/runner/.cloudflared/tunnel.json
+          
+          ingress:
+            - hostname: cloud.lilli.eu.org
+              service: http://localhost:8080
+            - service: http_status:404
+          EOL
 
-            cloudflared tunnel run cl-lilli
+          cloudflared tunnel run cloudlilli
