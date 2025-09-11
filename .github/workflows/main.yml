@@ -5,7 +5,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      CLOUDFLARE_TUNNEL_JSON_B64: ${{ secrets.CLOUDFLARE_TUNNEL_JSON_B64 }}
+      
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -32,8 +34,7 @@ jobs:
       - name: Run Cloudflare Tunnel
         run: |
           mkdir -p ~/.cloudflared
-          echo "${{ secrets.CLOUDFLARE_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json
-          echo "${{ secrets.CLOUDFLARE_CERT_PEM_B64 }}" | base64 -d > ~/.cloudflared/cert.pem
+          echo "$CLOUDFLARE_TUNNEL_JSON_B64" | base64 -d > ~/.cloudflared/tunnel.json
           
           cat > ~/.cloudflared/config.yml <<'EOL'
           tunnel: cloudlilli
