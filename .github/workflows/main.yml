@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir -p ~/.cloudflared
           echo "${{ secrets.CLOUDFLARE_TUNNEL_JSON }}" > ~/.cloudflared/tunnel.json
+          echo "${{ secrets.CLOUDFLARE_CERT_PEM_B64 }}" | base64 -d > ~/.cloudflared/cert.pem
           
           cat > ~/.cloudflared/config.yml <<'EOL'
           tunnel: cloudlilli
