@@ -25,6 +25,12 @@ jobs:
             --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
             --volume /var/run/docker.sock:/var/run/docker.sock:ro \
             ghcr.io/nextcloud-releases/all-in-one:latest
+
+      - name: Check running containers
+        run: docker ps -a
+
+      - name: Check listening ports
+        run: sudo ss -tlnp
             
       - name: Install Cloudflared
         run: |
