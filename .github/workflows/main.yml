@@ -33,17 +33,4 @@ jobs:
     
       - name: Run Cloudflare Tunnel
         run: |
-          mkdir -p ~/.cloudflared
-          echo "$CLOUDFLARE_TUNNEL_JSON_B64" | base64 -d > ~/.cloudflared/tunnel.json
-          
-          cat > ~/.cloudflared/config.yml <<'EOL'
-          tunnel: cloudlilli
-          credentials-file: /home/runner/.cloudflared/tunnel.json
-          
-          ingress:
-            - hostname: cloud.lilli.eu.org
-              service: http://localhost:8080
-            - service: http_status:404
-          EOL
-
-          cloudflared tunnel run cllilli
+            cloudflared tunnel --url http://localhost:8080
