@@ -38,5 +38,5 @@ jobs:
           sudo dpkg -i cloudflared.deb
     
       - name: Run Cloudflare Tunnel
-        run: |
-            cloudflared tunnel --url https://localhost:8443
+        run: cloudflared tunnel --no-tls-verify --url https://localhost:8443
+
