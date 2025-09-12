@@ -33,4 +33,4 @@ jobs:
     
       - name: Run Cloudflare Tunnel
         run: |
-            cloudflared tunnel --url http://localhost:8080
+            cloudflared tunnel --url https://localhost:8080
