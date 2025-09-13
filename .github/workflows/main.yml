@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo ss -tlnp
           sudo sh -c 'echo "0 2147483647" > /proc/sys/net/ipv4/ping_group_range'
-          curl -v http://127.0.0.1:8443
+          curl -v http://0.0.0.0:8443
               
       - name: Install Cloudflared
         run: |
