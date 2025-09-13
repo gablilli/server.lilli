@@ -33,6 +33,7 @@ jobs:
         run: |
           sudo ss -tlnp
           sudo sh -c 'echo "0 2147483647" > /proc/sys/net/ipv4/ping_group_range'
+          curl -v http://127.0.0.1:8443
               
       - name: Install Cloudflared
         run: |
@@ -40,5 +41,5 @@ jobs:
           sudo dpkg -i cloudflared.deb
     
       - name: Run Cloudflare Tunnel
-        run: cloudflared tunnel --no-tls-verify --url https://127.0.0.1:8443
+        run: cloudflared tunnel --no-tls-verify --url https://0.0.0.0:8443
 
